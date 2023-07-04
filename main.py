@@ -1,15 +1,20 @@
+import random
+
 from Term import Term
 
 
-def q3(f, g, n, customN):
+def q3(f, g):
+
+    if f == "ignore":
+        return
+
     Fx = parse(f)
     Gx = parse(g)
 
-    if not customN:
-        if Fx[0].degree > Gx[0].degree:
-            n = Fx[0].degree + 1
-        else:
-            n = Gx[0].degree + 1
+    if Fx[0].degree > Gx[0].degree:
+        n = Fx[0].degree + 1
+    else:
+        n = Gx[0].degree + 1
 
     fx = fillInZeroes(Fx, n)
     gx = fillInZeroes(Gx, n)
@@ -102,23 +107,71 @@ def parse(fx):
             terms.append(Term(sign * int(arity), int(split[1])))
     return terms
 
+def randomPoly():
+    # term array representing the polynomial
+    y = []
+    # degree of this polynomial
+    degree = random.randint(1,9)
+    # 0th term, generate 75% of the time
+    if random.randint(0,4) > 0:
+        y.append(Term(random.randint(-99,999), 0))
+
+    # create an array of terms up to the degree
+    for i in range(1, degree):
+        if random.randint(0,4) > 1:
+            y.append(Term(random.randint(-99, 999), i))
+
+    if len(y) == 0:
+        return randomPoly() # recursively ensure length is not zero
+
+    y.reverse()
+    return y
+
+def unParse(fArr, gArr):
+    return [unparseIndividual(str(fArr[0]), fArr), unparseIndividual(str(gArr[0]), gArr)]
+
+def unparseIndividual(f, fArr):
+    i = 0
+    for t in fArr:
+        if i == 0:
+            i = 1
+            continue
+        if str(t) == "0":
+            continue
+        op = " + "
+        if t.arity < 0:
+            op = " "
+        f = f + op + str(t)  # '420x^8 + 90x^7  + 706x^6  + 935x^5  + 302x^4 -14x^3 -8x  + 792'
+
+        i = i + 1
+    return f
+
+
+def loop(ii):
+
+    for i in range(int(ii)):
+        funcs = unParse(randomPoly(), randomPoly())
+        q3(funcs[0], funcs[1])
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
 
-    q4bProbablyWrong = False
-    if q4bProbablyWrong:
-        q3("13x^6 + 12x^5 + 31x^4 + 22x^3 + 8x^2 + 15x + 11", "x^3 - x^2 - 1", 37, True)
-
     debug = False
     if debug:
-        q3("x^2 + 1", "x", 0, False)
+        q3("x^2 + 1", "x")
     else:
         fromClass = input("Example from class? (y/n)")
         if fromClass == "y":
             f = "x^2 + 7x + 9"
             g = "3x^2 + 2x + 5"
         else:
-            f = input("Give fx in the form shown on hw6")
-            g = input("Give gx in the form shown on hw6")
-        q3(f, g, 0, False)
+            randomGen = input("Random generator loop? (y/n)")
+            if randomGen == "y":
+                i = input("How many iterations")
+                loop(i)
+                f = "ignore"
+                g = ""
+            else:
+                f = input("Give fx in the form shown on hw6")
+                g = input("Give gx in the form shown on hw6")
+        q3(f, g)
