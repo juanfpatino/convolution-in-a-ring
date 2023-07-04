@@ -1,10 +1,11 @@
+import os
+import platform
 import random
 
 from Term import Term
 
 
 def q3(f, g):
-
     if f == "ignore":
         return
 
@@ -55,7 +56,7 @@ def q3(f, g):
                 firstDone = True
             if ci.arity < 0:  # negative
                 result = "- " + str(ci).split("-")[1]
-            else: # positive (ignore sign)
+            else:  # positive (ignore sign)
                 result = str(ci)
     print(result)
 
@@ -107,28 +108,31 @@ def parse(fx):
             terms.append(Term(sign * int(arity), int(split[1])))
     return terms
 
+
 def randomPoly():
     # term array representing the polynomial
     y = []
     # degree of this polynomial
-    degree = random.randint(1,9)
+    degree = random.randint(1, 9)
     # 0th term, generate 75% of the time
-    if random.randint(0,4) > 0:
-        y.append(Term(random.randint(-99,999), 0))
+    if random.randint(0, 4) > 0:
+        y.append(Term(random.randint(-999, 999), 0))
 
     # create an array of terms up to the degree
     for i in range(1, degree):
-        if random.randint(0,4) > 1:
-            y.append(Term(random.randint(-99, 999), i))
+        if random.randint(0, 4) > 1:
+            y.append(Term(random.randint(-999, 999), i))
 
     if len(y) == 0:
-        return randomPoly() # recursively ensure length is not zero
+        return randomPoly()  # recursively ensure length is not zero
 
     y.reverse()
     return y
 
+
 def unParse(fArr, gArr):
     return [unparseIndividual(str(fArr[0]), fArr), unparseIndividual(str(gArr[0]), gArr)]
+
 
 def unparseIndividual(f, fArr):
     i = 0
@@ -147,11 +151,26 @@ def unparseIndividual(f, fArr):
     return f
 
 
-def loop(ii):
+def printDebugPretty(size):
+    line = ""
+    for i in range(size):
+        line = line + "-"
+    print(line)
 
+
+def loop(ii, clear):
     for i in range(int(ii)):
         funcs = unParse(randomPoly(), randomPoly())
+        printDebugPretty(22)
+        print("Convolution of\nf =", funcs[0], "\ng =", funcs[1], "\n\n")
         q3(funcs[0], funcs[1])
+        printDebugPretty(22)
+        if clear:
+            cmd = 'clear'  # mac/linux
+            if platform.system() == "Windows":
+                cmd = 'cls'
+            os.system(cmd)
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
@@ -168,7 +187,11 @@ if __name__ == '__main__':
             randomGen = input("Random generator loop? (y/n)")
             if randomGen == "y":
                 i = input("How many iterations")
-                loop(i)
+                # clear = input("clear screen after each? (y/n)")
+                # if clear == "y":
+                #     loop(i, True)
+                # else:
+                loop(i, False)
                 f = "ignore"
                 g = ""
             else:
