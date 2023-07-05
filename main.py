@@ -113,15 +113,15 @@ def randomPoly():
     # term array representing the polynomial
     y = []
     # degree of this polynomial
-    degree = random.randint(1, 9)
+    degree = random.randint(1, 99)
     # 0th term, generate 75% of the time
     if random.randint(0, 4) > 0:
-        y.append(Term(random.randint(-999, 999), 0))
+        y.append(Term(random.randint(-9999, 9999), 0))
 
     # create an array of terms up to the degree
     for i in range(1, degree):
         if random.randint(0, 4) > 1:
-            y.append(Term(random.randint(-999, 999), i))
+            y.append(Term(random.randint(-9999, 9999), i))
 
     if len(y) == 0:
         return randomPoly()  # recursively ensure length is not zero
@@ -145,7 +145,7 @@ def unparseIndividual(f, fArr):
         op = " + "
         if t.arity < 0:
             op = " "
-        f = f + op + str(t)  # '420x^8 + 90x^7  + 706x^6  + 935x^5  + 302x^4 -14x^3 -8x  + 792'
+        f = f + op + str(t)
 
         i = i + 1
     return f
@@ -187,11 +187,11 @@ if __name__ == '__main__':
             randomGen = input("Random generator loop? (y/n)")
             if randomGen == "y":
                 i = input("How many iterations")
-                # clear = input("clear screen after each? (y/n)")
-                # if clear == "y":
-                #     loop(i, True)
-                # else:
-                loop(i, False)
+                clear = input("clear screen after each? (y/n)")
+                if clear == "y":
+                    loop(i, True)
+                else:
+                    loop(i, False)
                 f = "ignore"
                 g = ""
             else:
