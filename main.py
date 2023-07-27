@@ -4,6 +4,7 @@ import random
 
 from Term import Term
 
+# todo docstrings and commenting for public github repo
 
 def q3(f, g):
     if f == "ignore":
