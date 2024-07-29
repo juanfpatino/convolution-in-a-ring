@@ -46,6 +46,8 @@ def run_tests():
         # Check for expected result manually, as it requires specific polynomial convolution result
         # Replace the expected result with the correct polynomial convolution result of "x^2 + 7x + 9" and "3x^2 + 2x + 5"
         expected_result = "3x^4 + 23x^3 + 68x^2 + 64x + 45"
+        if result != expected_result:
+            print(f"q3 function test failed\nExpected: {expected_result}\nGot: {result}")
         assert result == expected_result, "q3 function test failed"
         print("q3 function tests passed")
     except AssertionError as e:
